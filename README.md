@@ -232,7 +232,7 @@ This project is open source and available under the [MIT License](LICENSE).
 ## 📞 Support
 
 For support and questions:
-- Email: support@ecommerce.com
+- Email: duyh030774@gmail.com
 - Documentation: Check the code comments
 - Issues: Create an issue in the repository
 
@@ -248,5 +248,6 @@ For support and questions:
 - API development for mobile apps
 
 ---
+
 
 **Built with ❤️ using PHP, MySQL, Bootstrap, and JavaScript**
