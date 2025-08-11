@@ -29,8 +29,8 @@ try {
 
     // Get order details with customer info and shipping address
     $stmt = $pdo->prepare("
-        SELECT 
-            o.id, o.user_id, o.shipping_address_id, o.status, o.total_amount, 
+        SELECT
+            o.id, o.user_id, o.shipping_address_id, o.status, o.total_amount,
             o.created_at, o.updated_at,
             u.name as customer_name, u.email as customer_email,
             a.recipient_name, a.line1, a.line2, a.city, a.state, a.postal_code, a.country
@@ -49,8 +49,8 @@ try {
 
     // Get only seller's items from this order
     $stmt = $pdo->prepare("
-        SELECT 
-            oi.id, oi.product_id, oi.seller_id, oi.quantity, 
+        SELECT
+            oi.id, oi.product_id, oi.seller_id, oi.quantity,
             oi.price_at_purchase, oi.total_price,
             p.name as product_name, p.main_image_url
         FROM order_items oi
@@ -74,11 +74,11 @@ try {
         <h6><strong>Order Information</strong></h6>
         <p><strong>Order ID:</strong> #<?php echo $order['id']; ?></p>
         <p><strong>Date:</strong> <?php echo date('M d, Y H:i', strtotime($order['created_at'])); ?></p>
-        <p><strong>Status:</strong> 
-            <span class="badge bg-<?php 
-                echo $order['status'] === 'pending' ? 'warning' : 
-                    ($order['status'] === 'delivered' ? 'success' : 
-                    ($order['status'] === 'cancelled' ? 'danger' : 'info')); 
+        <p><strong>Status:</strong>
+            <span class="badge bg-<?php
+                echo $order['status'] === 'pending' ? 'warning' :
+                    ($order['status'] === 'delivered' ? 'success' :
+                    ($order['status'] === 'cancelled' ? 'danger' : 'info'));
             ?>">
                 <?php echo ucfirst($order['status']); ?>
             </span>
@@ -147,16 +147,7 @@ try {
         <tbody>
             <?php foreach ($orderItems as $item): ?>
             <tr>
-                <td>
-                    <div class="d-flex align-items-center">
-                        <?php if ($item['main_image_url']): ?>
-                            <img src="<?php echo htmlspecialchars($item['main_image_url']); ?>"
-                                 alt="Product" class="me-2 rounded" 
-                                 style="width: 40px; height: 40px; object-fit: cover;">
-                        <?php endif; ?>
-                        <span><?php echo htmlspecialchars($item['product_name']); ?></span>
-                    </div>
-                </td>
+                <td><?php echo htmlspecialchars($item['product_name']); ?></td>
                 <td>$<?php echo number_format($item['price_at_purchase'], 2); ?></td>
                 <td><?php echo $item['quantity']; ?></td>
                 <td><strong>$<?php echo number_format($item['total_price'], 2); ?></strong></td>
