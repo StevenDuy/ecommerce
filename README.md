@@ -85,16 +85,6 @@ chmod 755 assets/images/products
 ### 5. Web Server Configuration
 Configure your web server to point to the project directory.
 
-## 🔑 Demo Accounts
-
-The system comes with pre-configured demo accounts:
-
-| Role | Email | Password |
-|------|-------|----------|
-| User | user@demo.com | password123 |
-| Seller | seller@demo.com | password123 |
-| Admin | admin@demo.com | password123 |
-
 ## 📁 Project Structure
 
 ```
@@ -251,3 +241,4 @@ For support and questions:
 
 
 **Built with ❤️ using PHP, MySQL, Bootstrap, and JavaScript**
+
