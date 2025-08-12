@@ -1,18 +1,14 @@
 -- ========================================
--- 📦 ECOMMERCE DATABASE INITIALIZATION SCRIPT
+-- 📦 ECOMMERCE DATABASE STRUCTURE & DATA
 -- ========================================
 
--- Tạo database và chọn sử dụng
-CREATE DATABASE IF NOT EXISTS ecommerce
-CHARACTER SET utf8mb4
-COLLATE utf8mb4_unicode_ci;
-
-USE ecommerce;
+-- LƯU Ý: Đảm bảo bạn đã chọn đúng database trước khi chạy script này.
+-- Ví dụ: USE your_database;
 
 -- ========================================
 -- BẢNG USERS
 -- ========================================
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
     id               INT AUTO_INCREMENT PRIMARY KEY,
     name             VARCHAR(100)                NOT NULL,
     email            VARCHAR(255) UNIQUE         NOT NULL,
@@ -26,7 +22,7 @@ CREATE TABLE users (
 -- ========================================
 -- BẢNG ADDRESSES
 -- ========================================
-CREATE TABLE addresses (
+CREATE TABLE IF NOT EXISTS addresses (
     id               INT AUTO_INCREMENT PRIMARY KEY,
     user_id          INT                         NOT NULL,
     recipient_name   VARCHAR(100)                NOT NULL,
@@ -47,7 +43,7 @@ CREATE TABLE addresses (
 -- ========================================
 -- BẢNG CATEGORIES
 -- ========================================
-CREATE TABLE categories (
+CREATE TABLE IF NOT EXISTS categories (
     id               INT AUTO_INCREMENT PRIMARY KEY,
     name             VARCHAR(100)                NOT NULL,
     parent_id        INT,
@@ -61,7 +57,7 @@ CREATE TABLE categories (
 -- ========================================
 -- BẢNG PRODUCTS
 -- ========================================
-CREATE TABLE products (
+CREATE TABLE IF NOT EXISTS products (
     id               INT AUTO_INCREMENT PRIMARY KEY,
     seller_id        INT                         NOT NULL,
     category_id      INT                         NULL,
@@ -85,7 +81,7 @@ CREATE TABLE products (
 -- ========================================
 -- BẢNG PRODUCT_IMAGES
 -- ========================================
-CREATE TABLE product_images (
+CREATE TABLE IF NOT EXISTS product_images (
     id               INT AUTO_INCREMENT PRIMARY KEY,
     product_id       INT                         NOT NULL,
     url              VARCHAR(500)                NOT NULL,
@@ -98,7 +94,7 @@ CREATE TABLE product_images (
 -- ========================================
 -- BẢNG CART_ITEMS
 -- ========================================
-CREATE TABLE cart_items (
+CREATE TABLE IF NOT EXISTS cart_items (
     id               INT AUTO_INCREMENT PRIMARY KEY,
     user_id          INT                         NOT NULL,
     product_id       INT                         NOT NULL,
@@ -115,7 +111,7 @@ CREATE TABLE cart_items (
 -- ========================================
 -- BẢNG ORDERS
 -- ========================================
-CREATE TABLE orders (
+CREATE TABLE IF NOT EXISTS orders (
     id                   INT AUTO_INCREMENT PRIMARY KEY,
     user_id              INT                         NOT NULL,
     shipping_address_id  INT,
@@ -133,7 +129,7 @@ CREATE TABLE orders (
 -- ========================================
 -- BẢNG ORDER_ITEMS
 -- ========================================
-CREATE TABLE order_items (
+CREATE TABLE IF NOT EXISTS order_items (
     id                INT AUTO_INCREMENT PRIMARY KEY,
     order_id          INT                         NOT NULL,
     product_id        INT                         NOT NULL,
@@ -185,7 +181,7 @@ END //
 DELIMITER ;
 
 -- ========================================
--- PROCEDURE: AddToCart
+-- PROCEDURE: AddToCart (bỏ DEFINER)
 -- ========================================
 DELIMITER //
 
@@ -222,9 +218,9 @@ END //
 DELIMITER ;
 
 -- ========================================
--- VIEW: cart_details
+-- VIEW: cart_details (bỏ DEFINER)
 -- ========================================
-CREATE VIEW cart_details AS
+CREATE OR REPLACE VIEW cart_details AS
 SELECT 
     ci.id AS cart_item_id,
     ci.user_id,
@@ -241,9 +237,9 @@ JOIN products p ON ci.product_id = p.id
 JOIN users u ON p.seller_id = u.id;
 
 -- ========================================
--- VIEW: order_details
+-- VIEW: order_details (bỏ DEFINER)
 -- ========================================
-CREATE VIEW order_details AS
+CREATE OR REPLACE VIEW order_details AS
 SELECT 
     o.id AS order_id,
     o.user_id,
@@ -265,10 +261,3 @@ JOIN order_items oi ON o.id = oi.order_id
 JOIN products p ON oi.product_id = p.id
 JOIN users seller ON oi.seller_id = seller.id
 LEFT JOIN addresses a ON o.shipping_address_id = a.id;
-
--- ========================================
--- SAMPLE DATA
--- ========================================
--- Success message
-
-SELECT 'Database created successfully with sample data!' AS status;
